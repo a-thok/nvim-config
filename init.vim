@@ -2,39 +2,40 @@ call plug#begin('~/.local/share/nvim/plugged')
 " theme
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'rakr/vim-one'
-Plug 'jacoborus/tender.vim'
 Plug 'kristijanhusak/vim-hybrid-material'
 " general
 Plug 'mhinz/vim-startify'
 Plug 't9md/vim-choosewin'
 Plug 'jiangmiao/auto-pairs'
 Plug 'dominikduda/vim_current_word'
+Plug 'tpope/vim-surround'
+Plug 'scrooloose/nerdcommenter'
 " html & css
-Plug 'mattn/emmet-vim'
-Plug 'othree/html5.vim'
-Plug 'hail2u/vim-css3-syntax'
+Plug 'mattn/emmet-vim', { 'for': [ 'html', 'css', 'vue', 'javascript' ] }
+Plug 'othree/html5.vim', { 'for': 'html' }
+Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 " javascript
-Plug 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx'
 " typescript
-Plug 'Quramy/tsuquyomi'
-Plug 'Shougo/vimproc.vim', { 'do' : 'make' } 
-Plug 'leafgarland/typescript-vim'
+Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
+Plug 'Shougo/vimproc.vim', { 'for': 'typescript', 'do' : 'make' }
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 " vue
-Plug 'posva/vim-vue'
+Plug 'posva/vim-vue', { 'for': 'vue' }
 " elm
-Plug 'ElmCast/elm-vim'
+Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 " markdown
-Plug 'plasticboy/vim-markdown'
-Plug 'iamcco/markdown-preview.vim'
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'iamcco/markdown-preview.vim', { 'on': 'MarkdownPreview' }
 " autocomplete
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'mhartington/nvim-typescript'
+Plug 'mhartington/nvim-typescript', { 'for': [ 'javascript', 'vue', 'typescript' ] }
 " linter
 Plug 'w0rp/ale'
-" tool
+" git
 Plug 'tpope/vim-fugitive'
+" tool
 Plug 'editorconfig/editorconfig-vim'
 call plug#end()
 
@@ -42,7 +43,7 @@ call plug#end()
 nmap - <Plug>(choosewin)
 
 "emmet
-au FileType html,css,vue imap <expr><tab> emmet#expandAbbrIntelligent("\<tab>")
+au FileType html,css,vue,javascript imap <expr><tab> emmet#expandAbbrIntelligent("\<tab>")
 
 " deoplete
 let g:acp_enableAtStartup = 0
@@ -67,6 +68,7 @@ let g:ale_fixers = {
 autocmd BufWritePost *.js,*.jsx,*.vue ALEFix
 
 syntax on
+autocmd BufEnter * :syntax sync maxlines=200
 
 if (empty($TMUX))
   if (has("termguicolors"))
@@ -76,22 +78,26 @@ endif
 
 set background=dark
 colorscheme hybrid_reverse
-let g:airline_theme='wombat'
+let g:airline_theme='powerlineish'
 
 filetype plugin indent on
 set tabstop=2
 set expandtab
 set shiftwidth=2
 
+" show trailing white space
+hi ExtraWhitespace guifg=#FF2626 gui=underline ctermfg=124 cterm=underline
+match ExtraWhitespace /\s\+$/
+
 set number
 set relativenumber
 
 set hlsearch
 
+" map
 imap jj <esc>
 let mapleader = " "
 nmap <leader>w :w<cr>
 nmap <leader>q :q<cr>
-" inoremap <S-TAB> <C-X><C-O>
 tnoremap <Esc> <C-\><C-n>
 
